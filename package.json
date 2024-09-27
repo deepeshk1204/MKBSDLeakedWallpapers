@@ -1,4 +1,3 @@
-
 {
   "name": "my-gallery",
   "version": "1.0.0",
@@ -9,7 +8,8 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "express-handlebars": "^6.0.7"
+    "express-handlebars": "^6.0.7",
+    "node-fetch": "2"
   },
   "author": "",
   "license": "ISC"
