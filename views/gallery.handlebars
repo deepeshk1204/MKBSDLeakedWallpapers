@@ -118,7 +118,7 @@
       const isAndroid = /Android/i.test(navigator.userAgent);
       const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-      if (isAndroid) {
+      {{!-- if (isAndroid) {
         // Open wallpaper intent for Android
         const intentURL = `intent://setWallpaper?image=${encodeURIComponent(imageSrc)}#Intent;scheme=android.intent.action.VIEW;end`;
         window.location.href = intentURL;
@@ -130,7 +130,10 @@
         // For web, show custom confirmation dialog
         currentImageSrc = imageSrc; // Save the image source for later use
         showConfirmationDialog();
-      }
+      } --}}
+              // For web, show custom confirmation dialog
+        currentImageSrc = imageSrc; // Save the image source for later use
+        showConfirmationDialog();
     }
 
     // Function to show the confirmation dialog
@@ -159,14 +162,16 @@
 
     // Update action text based on the device
     document.querySelectorAll('.action-text').forEach((el) => {
-      const isAndroid = /Android/i.test(navigator.userAgent);
+      {{!-- const isAndroid = /Android/i.test(navigator.userAgent);
       const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       
       if (isAndroid || isiOS) {
         el.textContent = 'Set Wallpaper';
       } else {
         el.textContent = 'Download';
-      }
+      } --}}
+
+      el.textContent = 'Download';
     });
   </script>
 </body>
