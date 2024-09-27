@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>MKBHD Wallpapers</title>
+  <meta name="description" content="MKBHD Wallpapers Collection" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Styles for the custom confirmation dialog */
+    .confirmation-dialog {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .dialog-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    }
+    .dialog-header {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .dialog-button {
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+    }
+    .confirm-btn {
+      background-color: #007aff; /* iOS blue */
+      color: white;
+    }
+    .cancel-btn {
+      background-color: #f3f4f6; /* Light gray */
+      color: #333;
+    }
+    .dialog-button:hover {
+      opacity: 0.9;
+    }
+    /* Custom font styling for the app */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center text-gray-800 min-h-screen p-4">
+  <!-- Header Section -->
+  <header class="w-full bg-white text-center py-6 shadow-md mb-6 rounded-lg">
+    <h1 class="text-4xl font-bold tracking-wide">MKBHD Wallpapers</h1>
+    <p class="mt-2 text-md text-gray-600">A Collection of Stunning Wallpapers</p>
+  </header>
+
+  <!-- Image Gallery -->
+  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
+    {{#each images}}
+      <li class="overflow-hidden rounded-xl shadow-lg transition transform hover:scale-105 hover:shadow-xl">
+        <a 
+          href="#" 
+          class="block group relative" 
+          onclick="handleWallpaperClick('{{this}}', event)"
+        >
+          <figure class="overflow-hidden rounded-xl">
+            <img
+              src="{{this}}"
+              alt="Wallpaper"
+              class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <figcaption
+              class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <span class="action-text">Action</span>
+            </figcaption>
+          </figure>
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+
+  <!-- Custom Confirmation Dialog -->
+  <div class="confirmation-dialog" id="confirmationDialog">
+    <div class="dialog-content">
+      <p class="dialog-header">Do you want to download this image?</p>
+      <button id="confirmDownload" class="dialog-button confirm-btn">Yes</button>
+      <button id="cancelDownload" class="dialog-button cancel-btn">No</button>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="mt-8 text-center text-gray-600 text-sm">
+    <p>© 2024 MKBHD Wallpapers. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let currentImageSrc = ''; // To store the current image source for download confirmation
+
+    // Function to handle wallpaper click
+    function handleWallpaperClick(imageSrc, event) {
+      event.preventDefault(); // Prevent default anchor behavior
+
+      // Detect device
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isAndroid) {
+        // Open wallpaper intent for Android
+        const intentURL = `intent://setWallpaper?image=${encodeURIComponent(imageSrc)}#Intent;scheme=android.intent.action.VIEW;end`;
+        window.location.href = intentURL;
+      } else if (isiOS) {
+        // Set wallpaper intent for iOS
+        const setWallpaperURL = `photos-redirect://?src=${encodeURIComponent(imageSrc)}`;
+        window.location.href = setWallpaperURL;
+      } else {
+        // For web, show custom confirmation dialog
+        currentImageSrc = imageSrc; // Save the image source for later use
+        showConfirmationDialog();
+      }
+    }
+
+    // Function to show the confirmation dialog
+    function showConfirmationDialog() {
+      document.getElementById('confirmationDialog').style.display = 'flex';
+    }
+
+    // Function to handle confirmation
+    document.getElementById('confirmDownload').onclick = function() {
+      const downloadLink = document.createElement('a');
+      downloadLink.href = currentImageSrc;
+      downloadLink.download = '';
+      downloadLink.click();
+      closeDialog(); // Close the dialog after confirming
+    };
+
+    // Function to handle cancellation
+    document.getElementById('cancelDownload').onclick = function() {
+      closeDialog(); // Just close the dialog
+    };
+
+    // Function to close the dialog
+    function closeDialog() {
+      document.getElementById('confirmationDialog').style.display = 'none';
+    }
+
+    // Update action text based on the device
+    document.querySelectorAll('.action-text').forEach((el) => {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      if (isAndroid || isiOS) {
+        el.textContent = 'Set Wallpaper';
+      } else {
+        el.textContent = 'Download';
+      }
+    });
+  </script>
+</body>
+</html>

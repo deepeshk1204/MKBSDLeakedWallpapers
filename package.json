@@ -1,0 +1,16 @@
+
+{
+  "name": "my-gallery",
+  "version": "1.0.0",
+  "description": "A simple image gallery using Node.js, Express, and Handlebars",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7"
+  },
+  "author": "",
+  "license": "ISC"
+}
