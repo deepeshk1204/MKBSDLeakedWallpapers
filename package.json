@@ -1,5 +1,5 @@
 {
-  "name": "my-gallery",
+  "name": "mkbsdwallpapers",
   "version": "1.0.0",
   "description": "A simple image gallery using Node.js, Express, and Handlebars",
   "main": "app.js",
